@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { useNotEmpty } from "../../hooks/notEmpty";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 function AddStartup() {
   const [inputs, setInputs] = useState({});
   const requiredFields = ["name", "logo", "mail"];
   const errors = useNotEmpty(inputs, requiredFields);
+  const [getter, handleSave] = useLocalStorage();
 
   function handleInputs(e) {
     const { value, name } = e.target;
@@ -16,7 +18,7 @@ function AddStartup() {
 
   function addStartup() {
     if (errors.length == 0) {
-      console.log("El formulario es valido");
+      handleSave(inputs);
     } else {
       console.log(`Tenes un error en ${errors}`);
     }
